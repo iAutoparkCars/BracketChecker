@@ -1,5 +1,7 @@
-package MyLinkedList;
+package myLinkedList;
 
+import java.util.HashSet;
+import java.util.Set;
 
 public class MyLinkedList
 {
@@ -82,12 +84,45 @@ public class MyLinkedList
 		{
 			Node temp = new Node();
 			temp = head;
+			System.out.print("[");
 			while(temp != null)
 			{
-				System.out.println(temp);
+				System.out.print(temp + " ");
 				temp = temp.next;
 			}
+			System.out.print("]\n");
+
 			//System.out.println(temp);
 		}
 	}
+
+	boolean hasCycle(Node head)
+	{
+	    //System.out.print("one head's data " + head.data);
+	    Boolean result = false;
+	    
+	    //empty list has no cycle
+	    if (head == null)
+	    {return result;}
+	    
+	    //create a hashset
+	    Set<Node> nodes = new HashSet<Node>();
+
+	    //iterate through the list
+	    Node current = head;
+	    while(current != null)
+	    {
+	        if (nodes.contains(current))
+	        {
+	            result = true;
+	            return result;
+	        }
+	        
+	        nodes.add(current);
+	        current = current.next;
+	    }
+	    return result;
+	}
+
+
 }

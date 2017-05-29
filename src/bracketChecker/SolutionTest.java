@@ -1,4 +1,4 @@
-package BracketChecker;
+package bracketChecker;
 import java.awt.List;
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package BracketChecker;
+package bracketChecker;
 import java.util.*;
 
 public class Solution {

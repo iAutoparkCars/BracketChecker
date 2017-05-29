@@ -1,9 +1,11 @@
 	
 List of Data Structures Exercises	
 
-	BracketChecker
+	#BracketChecker
 			Algorithm to check if brackets () {} [] are matched using a stack. There is a test class SolutionTest.java.
-	MyLinkedList
+	
+	#MyLinkedList
 			Writing my own LinkedList. Has functions to add to front, isEmpty, and detect cycles.
-
+	
+	
 	

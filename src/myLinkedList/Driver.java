@@ -7,7 +7,18 @@ public class Driver
 
 	public static void main(String[] args)
 	{
-		//create a test instance to test add, print, and insert
+		
+		int a = 0;
+		int b = 2;
+		a =+ b;
+		a += b;
+		a += b;
+		a += b;
+
+		System.out.print(a);
+		
+		
+		/*//create a test instance to test add, print, and insert
 		MyLinkedListTest noCycle = new MyLinkedListTest();
 		noCycle.CreateAcyclicLL();
 		noCycle.PrintInsertTest();
@@ -17,7 +28,9 @@ public class Driver
 			
 		MyLinkedListTest withCycle = new MyLinkedListTest();
 		withCycle.CreateCyclicLL();	
-		withCycle.hasCycleTest();
+		withCycle.hasCycleTest();*/
+	
+		
 	}
 	
 }

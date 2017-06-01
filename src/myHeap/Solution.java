@@ -1,5 +1,4 @@
 package myHeap;
-
 import java.io.*;
 import java.util.*;
 
@@ -39,8 +38,8 @@ public class Solution
         }
         
         //print the heap here. the null is a  placeholder
-        //for (Integer i : heap)
-        //System.out.print(i + " " );
+        for (Integer i : heap)
+        System.out.print(i + " " );
         
     }
 
@@ -53,14 +52,33 @@ public class Solution
     {
        //if heap is size 2, only placeholder & root, so don't check
        heap.add(v);
-       if (heap.size() > 2)
+        
+       //if the parent is larger than the child, percolate
+       int currInd = heap.size()-1;
+       if (heap.size() > 2 && parentVal(currInd) > heap.get(currInd))
        {
          //System.out.println(heap.size()-1);
-         System.out.println("parent of " + v + " is: " + parentVal());
+         System.out.println("parent of " + v + " is " + parentVal(currInd) + 
+                           " so I want to swap");
+           
+         percolate(currInd,parentIndex(currInd));  //child index, parent index
          //check here
        }
 
         //System.out.println("1 " + v); 
+    }
+    
+    public static void percolate(int child, int parent)
+    {
+        if (heap.get(parent)==null)
+            return;
+        
+        int temp = heap.get(child);
+        heap.set(child,heap.get(parent));
+        heap.set(parent,temp);
+        
+        //percolate the next level higher (new child, new parent)
+        percolate(parent,parentIndex(parent));
     }
                            
     public static void delete(int v)
@@ -73,9 +91,9 @@ public class Solution
         //System.out.println("3 ");
     }
     
-     public static int parentVal()
+     public static int parentVal(int i)
     {
-        return heap.get(parentIndex());
+        return heap.get(parentIndex(i));
     }
     
     public static int l_childVal()
@@ -89,13 +107,13 @@ public class Solution
     }
     
     
-    public static int parentIndex()
+    public static int parentIndex(int i)
     {
         int parentInd;
-        int childIndex = heap.size()-1; //after child added to heap
+        //int childIndex = heap.size()-1; //after child added to heap
         //System.out.println(childIndex);
         
-        parentInd =  (int) (childIndex/2.0);
+        parentInd =  (int) (i/2.0);
         return parentInd;
     }
     

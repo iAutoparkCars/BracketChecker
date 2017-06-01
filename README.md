@@ -8,7 +8,8 @@ List of Data Structures Exercises
 		Writing my own LinkedList. Has functions to add to front, isEmpty, insert at specified position, 
 		and detect cycles.
 	
-	
+	>MyHeap
+		(in progress) write functions to add(v), delete(v), and printMin 
 	
 	
 	

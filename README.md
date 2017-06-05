@@ -9,7 +9,11 @@ List of Data Structures Exercises
 		and detect cycles.
 	
 	>MyHeap
-		(in progress) write functions to add(v), delete(v), and printMin 
+		write functions to insert(v), delete(v), and printMin 
+		Passes most unit tests.
+		delete(v), which calls insert(v), is slightly buggy; not going to more hours trying
+		to crank out the bugs.
+		
 	
 	
 	

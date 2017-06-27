@@ -10,6 +10,8 @@ public class Pair<T1, T2>
 	{
 		this.a =  a;
 		this.b =  b;
+		String c = "test";
+		
 	}
 
 	public Integer getKey() {

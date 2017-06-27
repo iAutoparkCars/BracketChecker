@@ -13,7 +13,9 @@ List of Data Structures Exercises
 		Passes most unit tests.
 		delete(v), which calls insert(v), is slightly buggy; not going to more hours trying
 		to crank out the bugs.
-		
+	
+	>MyQueue
+		Implemented with 2 stack for exercise. Contains functions enqueue and dequeue
 	
 	
 	

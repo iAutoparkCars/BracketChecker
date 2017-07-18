@@ -8,15 +8,9 @@ public class Driver
 	public static void main(String[] args)
 	{
 		
-		int a = 0;
-		int b = 2;
-		a =+ b;
-		a += b;
-		a += b;
-		a += b;
-
-		System.out.print(a);
-		
+		//testing if I can store the name of the class that creates the object
+		MyLinkedList list = new MyLinkedList();
+		System.out.println(list.callingClassName);
 		
 		/*//create a test instance to test add, print, and insert
 		MyLinkedListTest noCycle = new MyLinkedListTest();

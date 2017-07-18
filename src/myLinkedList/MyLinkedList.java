@@ -6,11 +6,12 @@ import java.util.Set;
 public class MyLinkedList
 {
 	Node head; 
-	
+	String callingClassName;
 	
 	public MyLinkedList()
 	{
 		head = null;
+		callingClassName = new Exception().getStackTrace()[1].getClassName();
 		//why am I able to compare if head is null, but I'm unable to compare if head.next is null? (NullPointer)
 	}
 	

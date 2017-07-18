@@ -5,7 +5,7 @@ public class Solution {
 
     public static void main(String[] args)
     {
-    	SolutionTest t1 = new SolutionTest();
+    	/*SolutionTest t1 = new SolutionTest();
     	
     	//String hi = "";
         Scanner in = new Scanner(t1.testString);
@@ -16,9 +16,73 @@ public class Solution {
             String s = in.next();
             convert(s);
         }
-        in.close();
+        in.close();*/
+    	
+    	
+    	//String a = " have a lot of fun  ";
+    	//System.out.println(a.trim());
+    	
+    	String s = "ringtones-exntesion.txt";
+    	
+    	System.out.println(removePrefix(s));
     	
     }
+    static String prefix = "ringtones-";
+    private static String removePrefix(String name)
+    {
+        char[] result = new char[name.length()-prefix.length()];
+        int res_i = 0;
+        char[] nameCh = name.toCharArray();
+
+
+        if (name.contains(prefix))
+        {
+            for (int i = prefix.length(); i < nameCh.length; i++)
+            {
+               result[res_i] = nameCh[i];
+               res_i++;
+            }
+        }
+        else
+        {
+            System.out.println(name + "has no file prefix");
+            return "NoPrefix";
+        }
+
+        return String.valueOf(result).trim();
+    }
+
+    
+    
+    private enum Ringtone
+    {
+        NORMAL(0),
+        LOUD(1),
+        VERYLOUD(2),
+        DANGER(3);
+
+        private int ringtone;
+        
+        Ringtone(int ringtone){
+        	this.ringtone = ringtone;
+        }
+        
+        @Override
+        public String toString()
+        {
+        	if (super.toString().equals("VERYLOUD"))
+        	{
+        		return "VERY LOUD";
+        	}
+        	else 
+        		return super.toString();
+        }
+    
+        public int toInt()
+        {
+        	return this.ringtone;
+        }
+    }    
     
     public static void convert(String bracket)
     {

@@ -1,6 +1,6 @@
 package practice_problems;
 
-public class Fibonacci
+public class A_Fibonacci
 {
 	public static void main(String[] args)
 	{

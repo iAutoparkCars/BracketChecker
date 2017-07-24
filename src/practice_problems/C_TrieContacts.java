@@ -8,16 +8,16 @@ public class C_TrieContacts
 	public static void main(String[] args)
 	{
 		Trie tree = new Trie();
-		tree.add("monday");
+		/*tree.add("monday");
 		tree.add("money");
 		tree.add("monetize");
 		tree.add("mon");
 		
-		tree.find("mon");
+		tree.find("mon");*/
 		
-		//tree.add("hack");
-		//tree.add("hackerrank");
-		//tree.find("hac");
+		tree.add("hack");
+		tree.add("hackerrank");
+		tree.find("hac");
 		
 		
 		
@@ -51,6 +51,7 @@ public class C_TrieContacts
 		private Map<String,Node> children;
 		private String value;
 		public Node(String val) {children = new HashMap<String, Node>(); this.value = val;}
+		public boolean isCompleteWord = false;
 		
 		public void put(String letter, Node nxtNode)
 		{
@@ -65,9 +66,10 @@ public class C_TrieContacts
 	
 	public static class Trie
 	{
+		//stores all contacts added, with value as the last relevant node. so "John" will store 'n" as its value
 		public Node root;
-		private int redundantCounter;
-		public Trie() {root = new Node(null);}
+		
+		public Trie() {root = new Node(null); }
 		
 		public void add(String str)
 		{
@@ -92,12 +94,14 @@ public class C_TrieContacts
 				if (current==null) {System.out.println("current is null."); return;}
 			}
 			
+			//System.out.println("last node is "+current);
+			if (current.isCompleteWord)
+			{System.out.println("\'"+str+"\' already exists. Not added"); return;}
 			
+			current.isCompleteWord = true;	
 			
 			//the first current becomes the new root of the tree
 			root = newRoot;
-			
-			//check here if the tree is the same as before. If "added" and tree is same, then add to counter
 		}
 		
 		public void traverse(String str)
@@ -119,11 +123,7 @@ public class C_TrieContacts
 	
 		public void find(String str)
 		{
-			String substr = "";
-			int substrCounter = 0;
-			
-			String tempStr = "";
-			
+			int subWordCounter = 0;
 			Node current = root;
 			
 			for (char ch : str.toCharArray())
@@ -134,16 +134,13 @@ public class C_TrieContacts
 					return;
 				}
 				current = current.children.get(String.valueOf(ch));
-				
-				tempStr = tempStr + ch;
+				if (current.isCompleteWord)
+					subWordCounter++;
 			}
 			
-			
-			
 			//start counting the leaves here
-			
 			System.out.println("Current node is " + current);
-			System.out.println("Number of leaves is: " + countLeaves(current) + substrCounter );
+			System.out.println("Number of leaves is: " + (countLeaves(current) + subWordCounter));
 		}
 	
 		

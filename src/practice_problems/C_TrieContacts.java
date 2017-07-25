@@ -15,13 +15,63 @@ public class C_TrieContacts
 		
 		tree.find("mon");*/
 		
-		tree.add("hack");
-		tree.add("hackerrank");
-		tree.find("hac");
+		//tree.add("hack");
+		//tree.add("hackerrank");
+		//tree.find("hac");
 		
 		
 		
 		//tree.find("hak");
+		
+		/*tree.add("ken");
+		tree.add("kay");
+		tree.add("ke");*/
+		
+		
+		tree.add("hack");
+		tree.add("hackerrank");
+		tree.add("h");
+		//tree.find("ha" or "h" or "hacke");			
+		tree.find("hacke");
+		
+		 /* above case doesn't work b/c counting 'hack' as part of the search
+		  * 
+		  * //difference searching between 'ha' and 'hacke'?
+		  * 
+		  * 	if 'ha'
+		  * 		go to last char 'a' and countLeaves&Words('a') (2), store in Count.
+		  * 	if 'hacke'
+		  * 		go to last char 'e' and countLeaves&Words('e') (1), store in Count.
+		  * 	if 'h'
+		  * 		go to last char 'h' and countLeaves&Words('h') (3), store in Count.
+		  * 		because itself is a contact. So check if the find str iself is a contact.
+		  * 
+		  *		//when going to "last char", consider using your traverse function 
+		  * 		
+		  * 	
+		  * 	Result = Count + subCounter
+		  * 
+		  *  	//iterate appending chars 
+		  *  	find('hacke')
+		  *  	
+		  *  	 
+		  *  	if find('hacke')
+		  *  -----------------------
+		  *  	find ('hacke')
+		  *  		iterate up to last char e
+		  *  		countLeaves(e)
+		  *  	
+		  *  	
+		  *  
+		  *   	
+		  *   
+		  *  
+		  *  
+		 */		
+		
+		
+		//System.out.println(countLeaves(tree.root.children.get("h")));
+		
 		
 		
 		
@@ -31,27 +81,33 @@ public class C_TrieContacts
 	public static int countLeaves(Node root)
 	{
 		int leaves = 0;
+		int subwordCounter = 0;
 		
-		//base case
+		/*if (root.isWord)
+			subwordCounter++;*/
+		
+		//base case. Increment leaves OR child. Increment both would be double-counting
 		if (root.children.size()==0)
 			leaves++;
-		else
+		else if (!(root.children.size()==0) && root.isWord)
 		{
-			for (Node child : root.children.values())
-			{
-				leaves = leaves + countLeaves(child);
-			}
+			subwordCounter++;
 		}
 		
-		return leaves;
+		for (Node child : root.children.values())
+		{
+			leaves = leaves + countLeaves(child);
+		}
+		
+		return leaves+subwordCounter;
 	}
 
 	public static class Node
 	{
-		private Map<String,Node> children;
+		public Map<String,Node> children;
 		private String value;
 		public Node(String val) {children = new HashMap<String, Node>(); this.value = val;}
-		public boolean isCompleteWord = false;
+		public boolean isWord = false;
 		
 		public void put(String letter, Node nxtNode)
 		{
@@ -68,8 +124,9 @@ public class C_TrieContacts
 	{
 		//stores all contacts added, with value as the last relevant node. so "John" will store 'n" as its value
 		public Node root;
+		public Map<String,Node> contacts;
 		
-		public Trie() {root = new Node(null); }
+		public Trie() {root = new Node(null); contacts = new HashMap<String,Node>(); }
 		
 		public void add(String str)
 		{
@@ -94,11 +151,14 @@ public class C_TrieContacts
 				if (current==null) {System.out.println("current is null."); return;}
 			}
 			
-			//System.out.println("last node is "+current);
-			if (current.isCompleteWord)
+			contacts.put(str, current);
+			
+			System.out.println("last node is "+current);
+			if (current.isWord)
 			{System.out.println("\'"+str+"\' already exists. Not added"); return;}
 			
-			current.isCompleteWord = true;	
+			
+			current.isWord = true;	
 			
 			//the first current becomes the new root of the tree
 			root = newRoot;
@@ -123,24 +183,39 @@ public class C_TrieContacts
 	
 		public void find(String str)
 		{
-			int subWordCounter = 0;
-			Node current = root;
-			
-			for (char ch : str.toCharArray())
+			if (contacts.containsKey(str))
 			{
-				if (!current.children.containsKey(String.valueOf(ch)))
-				{
-					System.out.println(str+" is not in the tree");
-					return;
-				}
-				current = current.children.get(String.valueOf(ch));
-				if (current.isCompleteWord)
-					subWordCounter++;
+				System.out.println(countLeaves(contacts.get(str))+" results.");
 			}
-			
-			//start counting the leaves here
-			System.out.println("Current node is " + current);
-			System.out.println("Number of leaves is: " + (countLeaves(current) + subWordCounter));
+			else 
+			{
+			    int subWordCounter = 0;
+				Node current = root;
+				String subWord = "";
+				
+				for (char ch : str.toCharArray())
+				{
+					if (!current.children.containsKey(String.valueOf(ch)))
+					{
+						System.out.println(str+" is not in the tree");
+						return;
+					}
+					
+					current = current.children.get(String.valueOf(ch));
+					if (current.isWord)
+						subWordCounter++;
+					
+					subWord = subWord+ch;
+					if (contacts.containsKey(subWord))
+					{
+						
+					}
+				}
+				
+				//start counting the leaves here
+				System.out.println("Current node is " + current);
+				System.out.println("Number of leaves is: " + (subWordCounter + countLeaves(current)));
+			}
 		}
 	
 		

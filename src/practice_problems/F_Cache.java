@@ -27,6 +27,9 @@ public class F_Cache {
 			if (keys.containsKey(key)){
 				moveKeyToFront(key);
 			}
+			
+			printKeys();
+			
 			return keys.get(key);
 		}
 		
@@ -52,16 +55,20 @@ public class F_Cache {
 				moveKeyToFront(key);
 			}
 			
-			for (String s : keys.keySet()){
-				System.out.print(s + " ");
-			}
-			System.out.println("");
+			printKeys();
 			
 		}
 	
 		public void moveKeyToFront(String key){
 			cache.remove(key);
 			cache.addLast(key);
+		}
+		
+		public void printKeys(){
+			for (String s : cache){
+				System.out.print(s + " ");
+			}
+			System.out.println("");
 		}
 		
 	}	//end LRU Cache class
@@ -74,9 +81,8 @@ public class F_Cache {
 	    cache.put("key3", "value3");
 	    cache.put("key4", "value4");
 	    
-	    System.out.println(cache.get("key1"));
+	    System.out.println(cache.get("key2"));
+	    
 	}
-	
-	
 
 }

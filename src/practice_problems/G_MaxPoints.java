@@ -27,7 +27,7 @@ public class G_MaxPoints {
 	    	 *  Loop through both hashmaps and see which has highest frequency
 	    	 *   	--this will be the line with the most number of points
 	    	 */
-	    	
+	    	String testingGit;
 	    	return 0;
 	    }
 	}

@@ -108,6 +108,104 @@ public class MyHashTable {
 		return true;
 	}
 	
+	/*
+	 * return a float value representing the load factor
+	 */
+	public float load(){
+
+		int numHashed = 0;
+		for (int i = 0; i < this.array.length; i++){
+			if (this.array[i] != null){
+				numHashed++;
+			}
+		}
+		
+		return ((float)numHashed/this.array.length);
+	}
+	
+	/*
+	 *  return the value associated with the given key, or null if no value is set
+	*/
+	public Object get(String key){
+		
+			// get the right chain
+		int hashIndex = key.hashCode() % this.size;
+		MyLinkedList chain = (MyLinkedList) this.array[hashIndex];
+		
+			// look for the key in the chain
+		Node i = chain.head;
+		
+			// check all nodes for target key
+		while (i != null){
+			
+			if (i.key.equals(key)){
+				return i.data;
+			}
+			
+			i = i.next;
+		}
+		
+			// if key not found, return null
+		return null;
+	}
+	
+	public Object delete(String key){
+		
+			// get the right chain
+		int hashIndex = key.hashCode() % this.size;
+		MyLinkedList chain = (MyLinkedList) this.array[hashIndex];
+		
+		/*if (chain.searchReplaceValueSuccess(key, null)){
+			return true;
+		}*/
+		
+			// look for the key in the chain
+		Node i = chain.head;
+		
+			// return data that is deleted
+		Object data;
+		
+			// check all nodes for target key
+		while (i != null){
+			
+			if (i.key.equals(key)){
+				data = i.data;
+				
+				
+					//if first Node in chain
+				if (i.next != null && i.prev == null){
+					i.next.prev = null;
+					chain.head = i.next;
+					return data;
+				
+				}
+					// if nothing after(last Node), delete current Node
+				if (i.next == null){
+					i.prev.next = null;
+					i = null;
+					return data;
+				}
+				
+					// if Node in between other Nodes
+				if (i.next != null && i.prev != null){
+						// Connect previous to next Node
+					i.prev.next = i.next;
+					i.next.prev = i.prev;
+					
+						// delete current
+					i.next = null;
+					i.prev = null;
+					return data;
+					}
+				}
+			
+				i = i.next;
+		}
+		
+		return null;
+	}
+	
+
 	public static void main(String[] args){
 		
 		MyHashTable table = new MyHashTable(2);
@@ -119,14 +217,32 @@ public class MyHashTable {
 		
 		
 		table.set("Key3",  new String("Object4"));
-		table.set("Test1",  new String("Object5"));
+		//table.set("Test1",  new String("Object5"));
+		
+		table.set("index",  new String("Object5"));
 		
 		
 		/*
 		 * Now to simulate two different keys hashing to same place in the hashTable
 		*/
 		
+		
+		
+		/*//test with table size 7
+		System.out.println(table.get("Hello"));
+		System.out.println(table.get("Key3"));*/
+		
+		//now test changing table size to 2
+		//System.out.println(table.get("index"));
+		
+			// testing delete
+		//System.out.println(table.delete("Hello"));
+		System.out.println(table.delete("index"));
+		
 		table.displayTable();
+		
+		
+		//System.out.println(table.load());
 		
 	}
 	
@@ -177,6 +293,7 @@ public class MyHashTable {
 		String key;
 		Object data;
 		Node next;
+		Node prev;
 		
 		Node(String key, Object data){
 			this.data = data;
@@ -207,10 +324,10 @@ public class MyHashTable {
 			}
 			else{
 				//traverse to end
-				Node end = getLastNode();
-				end.next = node;
+				Node oldEnd = getLastNode();
+				oldEnd.next = node;
+				node.prev = oldEnd;
 			}
-			
 		}
 		
 			// Don't use this on an empty LinkedList
@@ -231,16 +348,9 @@ public class MyHashTable {
 
 			Node i = head;
 			
-				// check first node
-			if (i.key.equals(key)){
-				i.data = value;
-				return true;
-			}
-			
-				// check all nodes after head
-			while (i.next != null){
+				// check all nodes for target key
+			while (i != null){
 				
-				System.out.println(i);
 				if (i.key.equals(key)){
 					i.data = value;
 					return true;

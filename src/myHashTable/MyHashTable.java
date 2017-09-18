@@ -26,12 +26,14 @@ public class MyHashTable {
 		
 			// makes an array of prime size
 		this.array = new MyLinkedList[this.size];
+		
+		System.out.println("\t>> Created array with prime size: " + this.size + "\n");
 	}
 	
 	public void displayTable(){
 		// iterate through the whole table and show the elements
 		
-		
+		System.out.println("______________________________Table______________________________");
 		
 		for (int i = 0; i < this.array.length; i++){
 			StringBuilder str = new StringBuilder();
@@ -63,13 +65,14 @@ public class MyHashTable {
 			// case 1: overwrite value with existing key
 		if (object.searchReplaceValueSuccess(key, value)){
 			
-			System.out.println("key: " + key + " exists. Its value was replaced with value: " + value);
+			System.out.println("key: " + key + " exists. Its value was replaced with value: " + value + "\n");
 			
 		} 
 			// case 2: Key not found. Two different keys hashed to same index. append to end
 		else {
 				object.addEnd( new Node(key, value) );
-				System.out.println("No key found, but different keys hashed to same index. Value appended to chain.");
+				System.out.println("Collision with key: \"" + key + "\" and another key at i = " + hashIndex +
+						". value appended to chain.\n");
 		
 		}
 		
@@ -89,6 +92,8 @@ public class MyHashTable {
 	*/
 	public boolean set(String key, Object value){
 		
+		System.out.println("set {key: \"" + key + "\", value: \"" + value + "\"} ");
+		
 		int hashIndex = key.hashCode() % this.size;
 		
 			// if no value here, store it
@@ -98,7 +103,7 @@ public class MyHashTable {
 			MyLinkedList newChain = new MyLinkedList(new Node(key, value));
 			this.array[hashIndex] = newChain;
 			
-			System.out.println("Hashed into i = " + hashIndex + " without collision.");
+			System.out.println("Hashed into i = " + hashIndex + " without collision.\n");
 		}
 			// else a value already is here; Collision.
 		else {
@@ -128,6 +133,8 @@ public class MyHashTable {
 	*/
 	public Object get(String key){
 		
+		System.out.println("get value for {key: \""+ key + "\"}");
+		
 			// get the right chain
 		int hashIndex = key.hashCode() % this.size;
 		MyLinkedList chain = (MyLinkedList) this.array[hashIndex];
@@ -151,6 +158,8 @@ public class MyHashTable {
 	
 	public Object delete(String key){
 		
+		System.out.println("delete value for {key: \""+ key + "\"}");
+		
 			// get the right chain
 		int hashIndex = key.hashCode() % this.size;
 		MyLinkedList chain = (MyLinkedList) this.array[hashIndex];
@@ -171,7 +180,6 @@ public class MyHashTable {
 			if (i.key.equals(key)){
 				data = i.data;
 				
-				
 					//if first Node in chain
 				if (i.next != null && i.prev == null){
 					i.next.prev = null;
@@ -180,10 +188,15 @@ public class MyHashTable {
 				
 				}
 					// if nothing after(last Node), delete current Node
-				if (i.next == null){
+				if (i.next == null && i.prev != null){
 					i.prev.next = null;
 					i = null;
 					return data;
+				}
+				
+					// if only node in chain, remove chain
+				if (i.next == null && i.prev == null){
+					this.array[hashIndex] = null;
 				}
 				
 					// if Node in between other Nodes
@@ -206,7 +219,7 @@ public class MyHashTable {
 	}
 	
 
-	public static void main(String[] args){
+	/*public static void main(String[] args){
 		
 		MyHashTable table = new MyHashTable(2);
 		
@@ -222,15 +235,15 @@ public class MyHashTable {
 		table.set("index",  new String("Object5"));
 		
 		
-		/*
+		
 		 * Now to simulate two different keys hashing to same place in the hashTable
-		*/
 		
 		
 		
-		/*//test with table size 7
+		
+		//test with table size 7
 		System.out.println(table.get("Hello"));
-		System.out.println(table.get("Key3"));*/
+		System.out.println(table.get("Key3"));
 		
 		//now test changing table size to 2
 		//System.out.println(table.get("index"));
@@ -244,7 +257,7 @@ public class MyHashTable {
 		
 		//System.out.println(table.load());
 		
-	}
+	}*/
 	
 	// if size is prime, use size. If not, get next highest prime for array size. 
 	private int getNextPrime(int number, int search_cap){

@@ -25,19 +25,57 @@ public class MyHashTable {
 		}
 		
 			// makes an array of prime size
-		this.array = new String[this.size];
+		this.array = new MyLinkedList[this.size];
 	}
 	
-	public void showTable(){
+	public void displayTable(){
 		// iterate through the whole table and show the elements
+		
+		
+		
+		for (int i = 0; i < this.array.length; i++){
+			StringBuilder str = new StringBuilder();
+			str.append("["+i+"] = ");
+			
+			if (this.array[i] instanceof MyLinkedList){
+				
+				MyLinkedList chain = (MyLinkedList) this.array[i];
+				str.append(chain.displayChain());
+				
+			}
+				// else should be null
+			else {
+				
+				str.append("null");
+				
+			}
+			
+			System.out.println(str.toString());
+		}
 		
 	}
 	
 		// resolves collision with by chaining a node
 	public void resolveCollision(int hashIndex, String key, Object value){
 		
-		Object object = this.array[hashIndex];
+		MyLinkedList object = (MyLinkedList) this.array[hashIndex];
 		
+			// case 1: overwrite value with existing key
+		if (object.searchReplaceValueSuccess(key, value)){
+			
+			System.out.println("Value with key: " + key + " was replaced.");
+			
+		} 
+			// case 2: Key not found. Two different keys hashed to same index. append to end
+		else {
+				
+				object.addEnd( new Node(key, value) );
+				System.out.println("No key found, but different keys hashed to same index. Value appended to chain.");
+		
+		}
+		
+		
+		/*
 			// if a chain exists, then append a new Node to end of chain
 		if (object instanceof MyLinkedList){
 			System.out.println("Collision. Chain already exists; append value to end.");
@@ -48,9 +86,7 @@ public class MyHashTable {
 			// chain is not created, create the first Node
 		else {
 			
-			
-			
-			/* 
+			 
 			 * Replacing a key with a new value. 
 			 * 
 			 * Problem: There is a value here. Do I create chain, or replace value?  
@@ -58,7 +94,7 @@ public class MyHashTable {
 			 * the value you are re-setting is a result of trying to store
 			 * a different value with same key, or is it a collision?
 			 * 
-			*/
+			
 			System.out.println("Create a chain now. First value in chain.");
 			
 				// create new chain; add value
@@ -77,14 +113,8 @@ public class MyHashTable {
 			result[hashIndex] = chain;
 			this.array = result;
 		}
+		*/
 		
-		
-			
-		
-		
-		
-		
-
 			
 	}
 	/*
@@ -114,8 +144,11 @@ public class MyHashTable {
 			// if no value here, store it
 		if (this.array[hashIndex] == null){
 			
+				// create a chain with a first Node
+			MyLinkedList newChain = new MyLinkedList(new Node(key, value));
+			this.array[hashIndex] = newChain;
+			
 			System.out.println("Hashed into i = " + hashIndex + " without collision.");
-			this.array[hashIndex] = value;
 		}
 			// else a value already is here; Collision.
 		else {
@@ -127,12 +160,20 @@ public class MyHashTable {
 	
 	public static void main(String[] args){
 		
-		MyHashTable table = new MyHashTable(9);
+		MyHashTable table = new MyHashTable(6);
+		
 		
 		table.set("Hello",  new String("Object1"));
 		table.set("Hello",  new String("Object2"));
 		table.set("Hello",  new String("Object3"));
-		table.set("Hello",  new String("Object4"));
+		
+		
+		table.set("Key3",  new String("Object4"));
+		
+		
+		//table.displayTable();
+		
+		//table.set("Hello",  new String("Object4"));
 		
 		
 		//printArray(table.array);
@@ -180,17 +221,13 @@ public class MyHashTable {
 		return -1;
 	}
 	
-    static boolean isPrime(int n) {
+    public boolean isPrime(int n) {
         
+    	if (n == 2) return true;
     	if (n < 2) return false;
-
-        int maxIteration = (int) Math.ceil(Math.sqrt(n));
-
-        for (int i = 2; i < maxIteration; i++) {
-            if(n % i == 0)
-                return false;
-        }
-
+        if (n % 2 == 0) return false;
+        for (int i = 3; i * i <= n; i += 2)
+            if (n % i == 0) return false;
         return true;
     	
     }
@@ -207,9 +244,15 @@ public class MyHashTable {
 		String key;
 		Object data;
 		Node next;
+		
 		Node(String key, Object data){
 			this.data = data;
-			this.key = null;
+			this.key = key;
+		}
+		
+		@Override
+		public String toString(){
+			return "("+data+")";
 		}
 	}
 	
@@ -218,6 +261,10 @@ public class MyHashTable {
 		
 		MyLinkedList(){
 			head = null;
+		}
+		
+		MyLinkedList(Node node){
+			head = node;
 		}
 		
 			// args: Node to add to end
@@ -241,6 +288,52 @@ public class MyHashTable {
 				temp = temp.next;
 			}
 			return temp;
+		}
+		
+		/*
+		 * Search for the key in this LinkedList. Replace the value if key was found.
+		 */
+		boolean searchReplaceValueSuccess(String key, Object value){
+			boolean result = false;
+
+			Node i = head;
+			
+				// check first node
+			if (i.key.equals(key)){
+				i.data = value;
+				return true;
+			}
+			
+				// check all nodes after head
+			while (i.next != null){
+				
+				System.out.println(i);
+				if (i.key.equals(key)){
+					i.data = value;
+					return true;
+				}
+				
+				i = i.next;
+			}
+			
+			return result;
+		}
+		
+		String displayChain(){
+			
+			StringBuilder str = new StringBuilder();
+
+			Node i = head;
+			str.append("-> "+i);
+			
+			while (i.next != null){
+				
+				str.append("-> "+i);
+				i = i.next;
+				
+			}
+			
+			return str.toString();
 		}
 		
 	}
